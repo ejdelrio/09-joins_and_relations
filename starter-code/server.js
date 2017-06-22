@@ -33,7 +33,7 @@ app.get('/articles', function(request, response) {
     response.send(result.rows);
   })
   .catch(function(err) {
-    console.error(err)
+    console.error(err);
   });
 });
 
@@ -76,8 +76,13 @@ app.put('/articles/:id', function(request, response) {
   // an author_id property, so we can reference it from the request.body.
   // TODO: Add the required values from the request as data for the SQL query to interpolate
   client.query(
-    ``,
-    []
+    `UPDATE articles
+    SET title = $1,
+        category = $2,
+        "publishedOn" = $3,
+        body = $4
+    WHERE author_id = $5` ,
+    [request.body.title, request.category, request.publishedOn, request.body, request.body.author_id]
   )
   .then(function() {
     // TODO: Write a SQL query to update an article record. Keep in mind that article records
